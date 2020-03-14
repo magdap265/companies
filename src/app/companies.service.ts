@@ -10,7 +10,6 @@ const apiUrl = 'https://recruitment.hal.skygate.io';
   providedIn: 'root'
 })
 export class CompaniesService {
-
   constructor(private http: HttpClient) { }
 
   getCompanies(): Observable<Company[]> {

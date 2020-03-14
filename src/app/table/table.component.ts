@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CompaniesService } from '../companies.service';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Company } from '../company.model';
 // import { Income } from '../income.model';
 
@@ -11,8 +12,9 @@ import { Company } from '../company.model';
 })
 export class TableComponent implements OnInit{
   companiesList: Company[];
+  company: Company;
   page: number = 0;
-  limit: number = 31;
+  limit: number = 10;
   pageLimit: number;
   disabledIncrement: boolean = false;
   disabledDecrement: boolean = true;
@@ -20,10 +22,13 @@ export class TableComponent implements OnInit{
   // incomesList: Income[];
   constructor( 
     private companiesService: CompaniesService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void { 
     this.getCompanies(this.page * this.limit, this.limit);
+
   }
 
   // changeLimit(event): void {
@@ -50,11 +55,10 @@ export class TableComponent implements OnInit{
     if (this.page == this.pageLimit || (this.companiesLength % this.limit == 0 && this.page == this.pageLimit-1)) {
       this.disabledIncrement = true;
     } else this.disabledIncrement = false;
-    console.log('page ' + this.page);
-    console.log('pageLimit ' + this.pageLimit);
-    console.log('limit ' + this.limit);
+    // console.log('page ' + this.page);
+    // console.log('pageLimit ' + this.pageLimit);
+    // console.log('limit ' + this.limit);
     this.getCompanies(this.limit * this.page, this.limit);
-    console.log(this.limit * this.page + ' coś')
   }
 
   decrementPage() {
@@ -63,10 +67,10 @@ export class TableComponent implements OnInit{
     if (this.page == 0) {
       this.disabledDecrement = true;
     } else this.disabledDecrement = false;
-    console.log(this.disabledDecrement+'dec')
-    console.log('page ' + this.page);
-    console.log('pageLimit ' + this.pageLimit);
-    console.log('limit ' + this.limit);
+    // console.log(this.disabledDecrement+'dec')
+    // console.log('page ' + this.page);
+    // console.log('pageLimit ' + this.pageLimit);
+    // console.log('limit ' + this.limit);
     this.getCompanies(this.limit * this.page, this.limit);
   }
 
