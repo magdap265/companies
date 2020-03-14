@@ -1,0 +1,22 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col">Nazwa</th>
+        <th scope="col">Miasto</th>
+        <th scope="col">Dochód</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let company of companiesList; let income of incomesList">
+        <tr>
+            <th scope="row">{{company.id}}</th>
+            <td>{{company.name}}</td>
+            <td>{{company.city}}</td>
+            <td>1</td>
+        </tr>
+    </tbody>
+    <button (click)="decrementPage()" [disabled]="disabledDecrement">-</button>
+    <span>{{page+1}}</span>
+    <button (click)="incrementPage()" [disabled]="disabledIncrement">+</button>
+    <!-- <input type="number" value={{limit}} (change)="changeLimit($event)"> -->
+</table>
