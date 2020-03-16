@@ -27,7 +27,7 @@ import { RouterModule, Routes } from '@angular/router';
     HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: TableComponent },
-      { path: 'company/:id', component: CompanyDetailComponent }
+      { path: 'company/:companyId', component: CompanyDetailComponent }
     ])
   ],
   providers: [],

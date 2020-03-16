@@ -12,19 +12,25 @@ import { Company } from '../company.model';
 })
 export class TableComponent implements OnInit{
   companiesList: Company[];
-  company: Company;
+  selectedCompany: Company;
+  incomesByCompanyId = null;
+  totalIncome: number;
   page: number = 0;
   limit: number = 10;
   pageLimit: number;
   disabledIncrement: boolean = false;
   disabledDecrement: boolean = true;
   companiesLength: number;
-  // incomesList: Income[];
+  incomesList;
+
+
   constructor( 
     private companiesService: CompaniesService,
-    private route: ActivatedRoute,
+    private activedRoute: ActivatedRoute,
     private router: Router,
-  ) {}
+  ) {
+    this.selectedCompany = this.companiesService.selectedCompany;
+  }
 
   ngOnInit(): void { 
     this.getCompanies(this.page * this.limit, this.limit);
@@ -46,8 +52,21 @@ export class TableComponent implements OnInit{
         this.companiesList = companies.slice(skip, skip + limit);
         this.companiesLength = companies.length;
         this.pageLimit = Math.floor(this.companiesLength/limit);
+        this.incomesList = this.companiesList.forEach(element => {
+          this.getIncomeById(element.id)
+        })
       });
   };
+
+  getIncomeById(id: number) {
+    this.companiesService.getIncomeById(id)
+      .subscribe(incomes=> {
+      this.incomesByCompanyId = incomes
+      this.totalIncome = Math.round(this.companiesService.incomeSum(this.incomesByCompanyId)*100)/100
+      this.companiesList.find(c => c.id === id)['income'] = this.totalIncome
+    })
+      // console.log(this.companiesList)
+  }
 
   incrementPage() {
     this.page++;
@@ -55,9 +74,6 @@ export class TableComponent implements OnInit{
     if (this.page == this.pageLimit || (this.companiesLength % this.limit == 0 && this.page == this.pageLimit-1)) {
       this.disabledIncrement = true;
     } else this.disabledIncrement = false;
-    // console.log('page ' + this.page);
-    // console.log('pageLimit ' + this.pageLimit);
-    // console.log('limit ' + this.limit);
     this.getCompanies(this.limit * this.page, this.limit);
   }
 
@@ -67,12 +83,9 @@ export class TableComponent implements OnInit{
     if (this.page == 0) {
       this.disabledDecrement = true;
     } else this.disabledDecrement = false;
-    // console.log(this.disabledDecrement+'dec')
-    // console.log('page ' + this.page);
-    // console.log('pageLimit ' + this.pageLimit);
-    // console.log('limit ' + this.limit);
     this.getCompanies(this.limit * this.page, this.limit);
   }
 
+  
 
 }

@@ -1,1 +1,32 @@
-<p>company-detail works!</p>
+<div *ngIf="selectedCompany.id; else loading">
+
+    <h3>{{selectedCompany.name}}</h3>
+
+    <table>
+            <tr>
+                <th scope="row">Numer identyfikacyjny: </th>
+                <td>{{selectedCompany.id}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Miasto: </th>
+                <td>{{selectedCompany.city}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Całkowity dochód firmy: </th>
+                <td>{{totalIncome}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Średni dochód firmy: </th>
+                <td>{{averageIncome}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Dochód firmy z ostatniego miesiąca: </th>
+                <td>{{mounthIncome}}</td>
+            </tr>
+    </table>
+</div>
+
+
+<ng-template #loading>
+    Lodading... 
+</ng-template>
