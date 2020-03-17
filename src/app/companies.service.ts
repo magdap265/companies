@@ -1,4 +1,4 @@
-import { Injectable, CollectionChangeRecord } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Company } from './company.model';
@@ -16,6 +16,7 @@ export class CompaniesService {
   totalIncome: number;
   averageIncome: number;
   mounthIncome:number;
+  incomesByData;
 
   constructor(private http: HttpClient) { }
 
@@ -31,48 +32,48 @@ export class CompaniesService {
     let incomesValues = data.incomes.map(income => {
       return  +income.value
     })
-    let incomesSum = 0;
+    let incomesSum = 0
     for (let value of incomesValues) {
       incomesSum += value
     }
-    return incomesSum
+    return Math.round(incomesSum*100)/100
   }
 
   incomeSumByDate(data, dateStart, dateEnd) {
     let incomesValues = data.incomes.map(income => {
-      let date = new Date(income.date);
-      let dateInNumber = date.getTime();
+      let date = new Date(income.date)
+      let dateInNumber = date.getTime()
       dateStart = new Date(dateStart)
       dateEnd = new Date(dateEnd)
-
       if (dateInNumber >= dateStart.getTime() && dateInNumber <= dateEnd.getTime()){
-        return +income.value;
-      } else return null;
+        return +income.value
+      } else return null
     })
-    let incomesSum = 0;
+    let incomesSum = 0
     for (let value of incomesValues) {
       incomesSum += value
     }
-    return incomesSum
+    this.incomesByData = incomesValues.filter(Boolean)
+    return Math.round(incomesSum*100)/100
   }
 
   incomeAverage(data, length) {
     let average = data/length
-    return average;
+    return Math.round(average*100)/100
   }
 
   incomeSumByMounth(data, dateStart, dateEnd){
     let incomesValues = data.incomes.map(income => {
-      let date = new Date(income.date);
-      let dateN = date.getTime();
+      let date = new Date(income.date)
+      let dateN = date.getTime()
       if (dateN >= dateStart.getTime() && dateN <= dateEnd.getTime()){
-        return +income.value;
-      } else return null;
+        return +income.value
+      } else return null
     })
 
-    let incomesSum = 0;
+    let incomesSum = 0
     for (let value of incomesValues) {
       incomesSum += value}
-    return incomesSum;
+    return Math.round(incomesSum*100)/100
     }
 }

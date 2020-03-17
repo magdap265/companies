@@ -6,10 +6,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { TableComponent } from './table/table.component';
 import { HttpClientModule } from '@angular/common/http';
-import { PaginationComponent } from './table/pagination/pagination.component';
-import { SortComponent } from './table/sort/sort.component';
-import { SearchComponent } from './table/search/search.component';
-import { CompanyDetailComponent } from './company-detail/company-detail.component';
+import { CompanyDetailsComponent } from './company-details/company-details.component';
 import { RouterModule } from '@angular/router';
 
 
@@ -18,10 +15,7 @@ import { RouterModule } from '@angular/router';
     AppComponent,
     HeaderComponent,
     TableComponent,
-    PaginationComponent,
-    SortComponent,
-    SearchComponent,
-    CompanyDetailComponent
+    CompanyDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +23,7 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: TableComponent },
-      { path: 'company/:companyId', component: CompanyDetailComponent }
+      { path: 'company/:companyId', component: CompanyDetailsComponent }
     ])
   ],
   providers: [],

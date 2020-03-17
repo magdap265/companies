@@ -1,0 +1,59 @@
+<div *ngIf="selectedCompany.id; else loading">
+
+    <h3 class="name">{{selectedCompany.name}}</h3>
+
+    <form class="form-inline">
+        <input 
+            class="form-control mb-3 mr-sm-3" 
+            type="date" 
+            (change)="setDateStart($event)" 
+            value="2018-01-01">
+        <input 
+            class="form-control mb-3 mr-sm-3" 
+            type="date" 
+            (change)="setDateEnd($event)" 
+            value="2020-12-31">
+    </form>
+
+    
+    <div class="table-responsive">
+    <table class="table">
+            <tr>
+                <th scope="row">Numer identyfikacyjny</th>
+                <td>{{selectedCompany.id}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Miasto</th>
+                <td>{{selectedCompany.city}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Całkowity dochód firmy</th>
+                <td>{{totalIncome}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Średni dochód firmy</th>
+                <td>{{averageIncome}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Dochód firmy z aktualnego miesiąca kalendarzowego</th>
+                <td>{{mounthIncome}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Dochód firmy z wybranego przedziału czasowego</th>
+                <td>{{incomeSumByDate}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Średni dochód firmy z wybranego przedziału czasowego: </th>
+                <td>{{averageIncomeByData}}</td>
+            </tr>
+    </table>
+</div>
+</div>
+
+
+<ng-template #loading>
+    <div class="text-center">
+        <div class="spinner-border spinner-border-sm mt-5" style="width: 5rem; height: 5rem;" role="status" aria-hidden="true"></div>
+        <div class="mt-4">Trwa ładowanie strony...</div>
+    </div>
+</ng-template>

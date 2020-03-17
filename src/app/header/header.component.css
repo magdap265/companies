@@ -1,0 +1,9 @@
+.navbar {
+    background-color: #005fff;
+}
+
+.navbar-nav {
+    color: #ffffff;
+    font-size: 30px;
+    font-family: 'Righteous', cursive;
+}
