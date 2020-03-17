@@ -11,7 +11,11 @@ const apiUrl = 'https://recruitment.hal.skygate.io';
 })
 export class CompaniesService {
   companiesList: Company[];
-  selectedCompany: Company;
+  selectedCompany: Company = {id: null, city: null, name: null};
+  incomesByCompanyId = null;
+  totalIncome: number;
+  averageIncome: number;
+  mounthIncome:number;
 
   constructor(private http: HttpClient) { }
 
@@ -34,12 +38,30 @@ export class CompaniesService {
     return incomesSum
   }
 
+  incomeSumByDate(data, dateStart, dateEnd) {
+    let incomesValues = data.incomes.map(income => {
+      let date = new Date(income.date);
+      let dateInNumber = date.getTime();
+      dateStart = new Date(dateStart)
+      dateEnd = new Date(dateEnd)
+
+      if (dateInNumber >= dateStart.getTime() && dateInNumber <= dateEnd.getTime()){
+        return +income.value;
+      } else return null;
+    })
+    let incomesSum = 0;
+    for (let value of incomesValues) {
+      incomesSum += value
+    }
+    return incomesSum
+  }
+
   incomeAverage(data, length) {
     let average = data/length
     return average;
   }
 
-  incomeMounth(data, dateStart, dateEnd){
+  incomeSumByMounth(data, dateStart, dateEnd){
     let incomesValues = data.incomes.map(income => {
       let date = new Date(income.date);
       let dateN = date.getTime();
@@ -48,9 +70,9 @@ export class CompaniesService {
       } else return null;
     })
 
-    let selectIncomesSum = 0;
+    let incomesSum = 0;
     for (let value of incomesValues) {
-      selectIncomesSum += value}
-    return selectIncomesSum;
+      incomesSum += value}
+    return incomesSum;
     }
 }

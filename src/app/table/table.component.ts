@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CompaniesService } from '../companies.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Company } from '../company.model';
-// import { Income } from '../income.model';
 
 
 @Component({
@@ -21,71 +19,94 @@ export class TableComponent implements OnInit{
   disabledIncrement: boolean = false;
   disabledDecrement: boolean = true;
   companiesLength: number;
-  incomesList;
+  incomesList: [];
+  allData;
+  searchName: string;
+  currentData = null;
 
 
   constructor( 
-    private companiesService: CompaniesService,
-    private activedRoute: ActivatedRoute,
-    private router: Router,
+    private companiesService: CompaniesService
   ) {
     this.selectedCompany = this.companiesService.selectedCompany;
   }
 
   ngOnInit(): void { 
-    this.getCompanies(this.page * this.limit, this.limit);
+    this.getCompanies(this.page * this.limit, this.limit)
+  };
 
-  }
-
-  // changeLimit(event): void {
-  //   const newValue = event.target.value;
-  //   this.limit = newValue;
-  //   this.page = 0;
-  //   this.getCompanies(0, newValue);
-  //   console.log(newValue)
-  // }  
-
-  
   getCompanies(skip: number, limit: number): void {
     this.companiesService.getCompanies()
       .subscribe(companies => {
+        this.allData = companies;
         this.companiesList = companies.slice(skip, skip + limit);
-        this.companiesLength = companies.length;
+        this.companiesLength = this.allData.length;
         this.pageLimit = Math.floor(this.companiesLength/limit);
-        this.incomesList = this.companiesList.forEach(element => {
+        this.incomesList = this.allData.forEach(element => {
           this.getIncomeById(element.id)
         })
+        
       });
   };
 
-  getIncomeById(id: number) {
+  getCompaniesFromLocal(skip: number, limit: number, data: []): void {
+    this.companiesList = data.slice(skip, skip + limit);
+  };
+
+  getIncomeById(id: number): void {
     this.companiesService.getIncomeById(id)
       .subscribe(incomes=> {
       this.incomesByCompanyId = incomes
       this.totalIncome = Math.round(this.companiesService.incomeSum(this.incomesByCompanyId)*100)/100
-      this.companiesList.find(c => c.id === id)['income'] = this.totalIncome
+      this.allData.find(c => c.id === id)['income'] = this.totalIncome
     })
-      // console.log(this.companiesList)
-  }
+  };
 
-  incrementPage() {
+  incrementPage(): void {
     this.page++;
     this.disabledDecrement=false;
-    if (this.page == this.pageLimit || (this.companiesLength % this.limit == 0 && this.page == this.pageLimit-1)) {
-      this.disabledIncrement = true;
-    } else this.disabledIncrement = false;
-    this.getCompanies(this.limit * this.page, this.limit);
+    this.page == this.pageLimit || (this.companiesLength % this.limit == 0 && this.page == this.pageLimit-1) ?
+      this.disabledIncrement = true : this.disabledIncrement = false
+    this.getCompaniesFromLocal(this.limit * this.page, this.limit, this.allData);
   }
 
-  decrementPage() {
+  decrementPage(): void {
     this.page--;
     this.disabledIncrement = false;
-    if (this.page == 0) {
-      this.disabledDecrement = true;
-    } else this.disabledDecrement = false;
-    this.getCompanies(this.limit * this.page, this.limit);
+    this.page == 0 ? this.disabledDecrement = true : this.disabledDecrement;
+    this.getCompaniesFromLocal(this.limit * this.page, this.limit, this.allData);
   }
 
-  
+  sortByIncomeDescending(): void {
+    this.allData = this.allData.sort((a,b) => {
+      return a.income-b.income})
+      this.getCompaniesFromLocal(this.page * this.limit, this.limit, this.allData)
+    }
 
+  sortByIncomeAscending(): void {
+    this.allData = this.allData.sort((a,b) => {
+      return b.income-a.income})
+      this.getCompaniesFromLocal(this.page * this.limit, this.limit, this.allData)
+  }
+
+  filterByName(event): void {
+    this.page = 0;
+    this.currentData = this.allData.map(c => {
+    let element = c.name.indexOf(event.target.value)
+    if (element === -1) {
+      return null 
+    } else {
+      return c
+    }
+  })
+    this.currentData = this.currentData.filter(Boolean)
+    this.companiesLength = (this.currentData.length === 0 ? this.allData.length : this.currentData.length)
+    this.pageLimit = Math.floor(this.companiesLength/this.limit);
+    this.getCompaniesFromLocal(this.limit * this.page, this.limit, this.currentData);
+    this.page == this.pageLimit || (this.companiesLength % this.limit == 0 && this.page == this.pageLimit-1) ?
+      this.disabledIncrement = true : this.disabledIncrement = false  
+    this.page == 0 ? this.disabledDecrement = true : this.disabledDecrement;
+  
+  }
+  
 }

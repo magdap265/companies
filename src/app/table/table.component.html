@@ -1,23 +1,35 @@
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">Nazwa</th>
-        <th scope="col">Miasto</th>
-        <th scope="col">Dochód</th>
-    </tr>
-    </thead>
-    <tbody *ngFor="let company of companiesList; let income of IncomesList">
-            <tr 
-                [routerLink]="['/company',company.id]">
-                    <th scope="row">{{company.id}}</th>
-                    <td>{{company.name}}</td>
-                    <td>{{company.city}}</td>
-                    <td>{{company.income}}</td>
-            </tr>
-    </tbody>
-    <button (click)="decrementPage()" [disabled]="disabledDecrement">-</button>
-    <span>{{page+1}}</span>
-    <button (click)="incrementPage()" [disabled]="disabledIncrement">+</button>
-    <!-- <input type="number" value={{limit}} (change)="changeLimit($event)"> -->
-</table>
+<div *ngIf="companiesList; else loading">
+    <input type="text" placeholder="search" (keyup) = "filterByName($event)">
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Nazwa</th>
+            <th scope="col">Miasto</th>
+            <th scope="col">
+                Dochód 
+                <button type="button" (click)="sortByIncomeDescending()">v</button>
+                <button type="button" (click)="sortByIncomeAscending()">^</button>
+            </th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let company of companiesList">
+                <tr 
+                    [routerLink]="['/company',company.id]">
+                        <th scope="row">{{company.id}}</th>
+                        <td>{{company.name}}</td>
+                        <td>{{company.city}}</td>
+                        <td>{{company.income}}</td>
+                </tr>
+        </tbody>
+        <button (click)="decrementPage()" [disabled]="disabledDecrement">-</button>
+        <span>{{page+1}}</span>
+        <button (click)="incrementPage()" [disabled]="disabledIncrement">+</button>
+        <!-- <input type="number" value={{limit}} (change)="changeLimit($event)"> -->
+    </table>
+</div>
+
+<ng-template #loading>
+    Lodading... 
+</ng-template>

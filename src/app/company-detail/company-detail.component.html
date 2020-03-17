@@ -1,8 +1,10 @@
 <div *ngIf="selectedCompany.id; else loading">
 
     <h3>{{selectedCompany.name}}</h3>
-
-    <table>
+    <input type="date" (change)="setDateStart($event)" value="2018-01-01">
+    <input type="date" (change)="setDateEnd($event)" value="2020-12-31">
+    <div class="table-responsive">
+    <table class="table">
             <tr>
                 <th scope="row">Numer identyfikacyjny: </th>
                 <td>{{selectedCompany.id}}</td>
@@ -20,10 +22,15 @@
                 <td>{{averageIncome}}</td>
             </tr>
             <tr>
-                <th scope="row">Dochód firmy z ostatniego miesiąca: </th>
+                <th scope="row">Dochód firmy z aktualnego miesiąca kalendarzowego: </th>
                 <td>{{mounthIncome}}</td>
             </tr>
+            <tr>
+                <th scope="row">Dochód firmy po dacie: </th>
+                <td>{{incomeSumByDate}}</td>
+            </tr>
     </table>
+</div>
 </div>
 
 

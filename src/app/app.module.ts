@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -9,7 +10,7 @@ import { PaginationComponent } from './table/pagination/pagination.component';
 import { SortComponent } from './table/sort/sort.component';
 import { SearchComponent } from './table/search/search.component';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { RouterModule, Routes } from '@angular/router';
   ],
   imports: [
     BrowserModule,
+    NgbModule,
     HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: TableComponent },
