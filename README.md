@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Start the project
 
-Four quick steps to start the project:
+Three quick steps to start the project:
 1. Run `git clone https://github.com/magdap265/crochet-project-frontend.git`.
 2. Run `npm install`.
 3. Run `ng serve -o`.
